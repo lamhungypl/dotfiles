@@ -1,0 +1,10 @@
+[credential]
+	helper = store
+[user]
+	name = usename
+	email = username@email.com
+[core]
+  editor = 'vi'
+
+[includeIf "gitdir:~/workspace/my_office/"]
+  path = .gitconfig_work
