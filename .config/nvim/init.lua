@@ -1,6 +1,6 @@
 require('base')
 require('maps')
-
+require('plugins')
 
 
 local has = function (x) 
