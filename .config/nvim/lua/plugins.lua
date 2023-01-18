@@ -9,6 +9,10 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-  use 'nvim-lualine/lualine.nvim' --Statusline
-  use 'hrsh7th/nvim-cmp' -- Completion
+  --Statusline
+  use 'nvim-lualine/lualine.nvim' 
+  --Completion
+  use 'hrsh7th/nvim-cmp' 
+  use 'tpope/vim-surround'
+  use 'tpope/vim-commentary'
 end)
