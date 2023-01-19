@@ -10,7 +10,10 @@ vim.cmd [[packadd packer.nvim]]
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
   --Statusline
-  use 'nvim-lualine/lualine.nvim' 
+  use {
+  'nvim-lualine/lualine.nvim',
+  require = { 'kyazdani42/nvim-web-devicons', opt = true}
+  }
   --Completion
   use 'hrsh7th/nvim-cmp' 
   use 'tpope/vim-surround'
