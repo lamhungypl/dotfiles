@@ -33,7 +33,7 @@ packer.startup(function(use)
     end,
   }
   use {
-    'svrana/neosolarized.nvim', -- color theme
+    'navarasu/onedark.nvim', -- color theme
     require = { 'tjdevries/colorbuddy.nvim' }
   }
   use 'neovim/nvim-lspconfig' -- language server potocol

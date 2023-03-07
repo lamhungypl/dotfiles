@@ -2,6 +2,10 @@
 
 local status, nvim_lsp = pcall(require, "lspconfig")
 if (not status) then return end
+if (vim.g.vscode) then
+  print('lspconfig in vscode')
+  return
+end
 
 local protocol = require('vim.lsp.protocol')
 
@@ -67,10 +71,6 @@ protocol.CompletionItemKind = {
 -- Set up completion using nvim_cmp with LSP source
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-nvim_lsp.flow.setup {
-  on_attach = on_attach,
-  capabilities = capabilities
-}
 
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
@@ -79,10 +79,6 @@ nvim_lsp.tsserver.setup {
   capabilities = capabilities
 }
 
-nvim_lsp.sourcekit.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
 
 nvim_lsp.sumneko_lua.setup {
   capabilities = capabilities,
@@ -106,20 +102,7 @@ nvim_lsp.sumneko_lua.setup {
   },
 }
 
-nvim_lsp.tailwindcss.setup {
-  on_attach = on_attach,
-  capabilities = capabilities
-}
 
-nvim_lsp.cssls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities
-}
-
-nvim_lsp.astro.setup {
-  on_attach = on_attach,
-  capabilities = capabilities
-}
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -146,4 +129,3 @@ vim.diagnostic.config({
     source = "always", -- Or "if_many"
   },
 })
-
