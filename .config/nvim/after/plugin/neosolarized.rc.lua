@@ -1,5 +1,10 @@
 local status, n = pcall(require, "neosolarized")
+
 if (not status) then return end
+
+if vim.g.vscode then
+  return
+end
 
 n.setup({
   comment_italics = true,
@@ -34,3 +39,4 @@ Group.new("DiagnosticUnderlineInfo", colors.none, colors.none, styles.undercurl,
 Group.new("DiagnosticUnderlineHint", colors.none, colors.none, styles.undercurl, cHint)
 
 Group.new("HoverBorder", colors.yellow, colors.none, styles.NONE)
+
