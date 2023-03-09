@@ -3,7 +3,7 @@ if (not status) then return end
 
 ts.setup {
   highlight = {
-    enable = false,
+    enable = true,
     disable = {},
   },
   indent = {
@@ -11,7 +11,8 @@ ts.setup {
     disable = {},
   },
   ensure_installed = {
-    -- "tsx",
+    "markdown",
+    "tsx",
     "toml",
     "fish",
     "php",
