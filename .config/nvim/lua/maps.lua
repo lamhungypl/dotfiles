@@ -9,25 +9,18 @@ keymap.set('i', 'qq', '<Esc>:q!<CR>')
 -- normal mode keys bindings
 keymap.set('n', '<C-a>', 'ggVG')
 
+-- Tab operation
+keymap.set('n', 'tn', 'gt')
+keymap.set('n', 'tp', 'gT')
+-- whatever delete, make it go away
+keymap.set('n', 'c', '"_c')
+keymap.set('n', 'C', '"_C')
+keymap.set('n', 'x', '"_x')
+keymap.set('n', 'X', '"_X')
 
 -- visualize mode keys bindings
 keymap.set('v', 'L', '$')
 
--------------------------------
-keymap.set('n', 'x', '"_x')
-
--- Increment/decrement
-keymap.set('n', '+', '<C-a>')
-keymap.set('n', '-', '<C-x>')
-
--- Delete a word backwards
-keymap.set('n', 'dw', 'vb"_d')
-
--- Select all
-keymap.set('n', '<C-a>', 'gg<S-v>G')
-
--- Save with root permission (not working for now)
---vim.api.nvim_create_user_command('W', 'w !sudo tee > /dev/null %', {})
 
 -- New tab
 keymap.set('n', 'te', ':tabedit')

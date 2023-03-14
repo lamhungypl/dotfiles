@@ -1,53 +1,48 @@
-local status, packer = pcall(require, "packer")
+local status, packer = pcall(require, 'packer')
 if (not status) then
-  print("Packer is not installed")
+  print('Packer is not installed')
   return
 end
+
 
 vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
+  -- Packer manage itself
   use 'wbthomason/packer.nvim'
+
+  -- plugin list
+
   use {
-    'svrana/neosolarized.nvim',
-    requires = { 'tjdevries/colorbuddy.nvim' }
+    'nvim-lualine/lualine.nvim', -- statusline
+    require = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
-  use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'nvim-lua/plenary.nvim' -- Common utilities
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
-  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
-  use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
-  use 'hrsh7th/nvim-cmp' -- Completion
-  use 'neovim/nvim-lspconfig' -- LSP
-  use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
-  use 'williamboman/mason.nvim'
-  use 'williamboman/mason-lspconfig.nvim'
-
-  use 'glepnir/lspsaga.nvim' -- LSP UIs
   use 'L3MON4D3/LuaSnip'
+  use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
+  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
+  use 'hrsh7th/nvim-cmp' -- code completition
+  use 'tpope/vim-surround' -- tag
+  use 'tpope/vim-commentary' -- comment
   use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+    'nvim-treesitter/nvim-treesitter', -- syntax hightlight
+    run = function()
+      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+      ts_update()
+    end,
   }
-  use 'kyazdani42/nvim-web-devicons' -- File icons
-  use 'nvim-telescope/telescope.nvim'
-  use 'nvim-telescope/telescope-file-browser.nvim'
-  use 'windwp/nvim-autopairs'
-  use 'windwp/nvim-ts-autotag'
-  use { 'numToStr/Comment.nvim',
-    requires = {
-      'JoosepAlviste/nvim-ts-context-commentstring'
-    }
+  use {
+    'projekt0n/github-nvim-theme', tag = 'v0.0.7'
   }
-  use 'norcalli/nvim-colorizer.lua'
-  use 'folke/zen-mode.nvim'
-  use({
-    "iamcco/markdown-preview.nvim",
-    run = function() vim.fn["mkdp#util#install"]() end,
-  })
-  use 'akinsho/nvim-bufferline.lua'
-  -- use 'github/copilot.vim'
-
-  use 'lewis6991/gitsigns.nvim'
-  use 'dinhhuy258/git.nvim' -- For git blame & browse
+  use 'neovim/nvim-lspconfig' -- language server potocol
+  use 'windwp/nvim-autopairs' -- auto pairs
+  use 'windwp/nvim-ts-autotag' -- auto tag
+  use 'nvim-telescope/telescope.nvim' -- fuzzy finder
+  use 'nvim-telescope/telescope-file-browser.nvim' -- file filter
+  use 'glepnir/lspsaga.nvim' -- LSP UIs
+  use 'jose-elias-alvarez/null-ls.nvim' -- code actions
+  use 'MunifTanjim/prettier.nvim'
+  use 'williamboman/mason.nvim' -- LSP support for specific lib
+  use 'williamboman/mason-lspconfig.nvim'
 end)

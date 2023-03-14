@@ -2,6 +2,10 @@
 
 local status, nvim_lsp = pcall(require, "lspconfig")
 if (not status) then return end
+if (vim.g.vscode) then
+  print('lspconfig in vscode')
+  return
+end
 
 local protocol = require('vim.lsp.protocol')
 

@@ -1,5 +1,5 @@
 require('base')
-require('highlights')
+--require('highlights')
 require('maps')
 require('plugins')
 
