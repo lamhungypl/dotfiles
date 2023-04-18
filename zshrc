@@ -1,5 +1,3 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -10,6 +8,8 @@ fi
 export GTK_IM_MODULE=ibus
 export QT_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
+
+
 
 #JAVA
 
@@ -104,7 +104,9 @@ vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
-
+# This bind arrow keys for search in sub history
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 # vi-mode configuration
 
 bindkey -M viins jk vi-cmd-mode
@@ -149,9 +151,17 @@ alias vi="nvim"
 alias vim="nvim"
 alias bat="batcat"
 alias lg="lazygit"
-alias ls="ls -lah"
+alias ls="ls -lah --color=tty"
 alias copy="xclip -sel clip"
 alias code='GTK_IM_MODULE="xim" code'
+alias gstuff='git add --all; git commit -m "stuff" --no-verify'
+alias gundo='git reset --soft @~1'
+ide(){
+  tmux split-window -v -p 30
+  tmux split-window -h -p 66
+  tmux split-window -h -p 50
+}
+
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -160,7 +170,7 @@ export NVM_DIR="$HOME/.nvm"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 # Set PATH, MANPATH, etc., for Homebrew.
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# alacritty zsh shell completion
+fpath+=${ZDOTDIR:-~}/.zsh_functions
