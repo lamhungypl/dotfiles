@@ -1,14 +1,13 @@
--- Turn off paste mode when leaving insert
-vim.api.nvim_create_autocmd("InsertLeave", {
-	pattern = "*",
-	command = "set nopaste",
-})
+-- Autocmds are automatically loaded on the VeryLazy event
+-- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
+-- Add any additional autocmds here
 
--- Disable the concealing in some file formats
--- The default conceallevel is 3 in LazyVim
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "json", "jsonc", "markdown", "lua" },
-	callback = function()
-		vim.opt.conceallevel = 0
-	end,
-})
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   pattern = "*",
+--   command = "!kitty @ set-spacing padding-left=0 padding-top=0",
+-- })
+--
+-- vim.api.nvim_create_autocmd("VimLeave", {
+--   pattern = "*",
+--   command = "!kitty @ set-spacing padding-left=default padding-top=default",
+-- })
