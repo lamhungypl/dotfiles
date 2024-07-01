@@ -1,0 +1,53 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "features": {
+    "inline_completion_provider": "none"
+  },
+  "relative_line_numbers": true,
+  "theme": "GitHub Dark Default",
+  "vim_mode": true,
+  "ui_font_size": 14,
+  "buffer_font_size": 14,
+  "buffer_font_family": "MesloLGS NF",
+  "languages": {
+    "TypeScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+      // "formatter": "language_server"
+      // "formatter": {
+      //   "code_actions": {
+      //     "source.filAll.eslint": true
+      //   },
+      //   // "external": {
+      //   //   "command": "eslint",
+      //   //   "arguments": ["-c", "./.eslintrc", "--fix"]
+      //   // },
+      //   "external": {
+      //     "command": "zsh", // Shell command interpreter
+      //     "arguments": [
+      //       "-c",
+      //       "npx prettier --config ./.prettierrc.js {buffer_path}"
+      //     ]
+      //   }
+      // }
+    }
+  },
+  "lsp": {
+    "typescript-language-server": {
+      "initialization_options": {
+        "preferences": {
+          // "importModuleSpecifierPreference": "non-relative",
+          // "importModuleSpecifier": "non-relative"
+        }
+      }
+    }
+  }
+}

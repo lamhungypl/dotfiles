@@ -1,0 +1,36 @@
+[
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "j k": ["workspace::SendKeystrokes", "escape"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "; w": "workspace::Save",
+      "; e": "project_panel::ToggleFocus",
+      "; r": "pane::CloseItemsToTheRight",
+      "t n": "pane::ActivateNextItem",
+      "t p": "pane::ActivatePrevItem",
+      "s v": "pane::SplitRight",
+      "s h": "pane::SplitDown",
+      "n p": ["workspace::ActivatePaneInDirection", "Left"],
+      "n n": ["workspace::ActivatePaneInDirection", "Right"]
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {}
+  },
+  {
+    "bindings": {
+      "; f": "file_finder::Toggle",
+      "; d": "pane::CloseInactiveItems"
+    }
+  },
+  {
+    "context": "Workspace && vim_mode == normal",
+    "bindings": {}
+  }
+]
