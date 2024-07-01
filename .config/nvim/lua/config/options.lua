@@ -48,3 +48,5 @@ if vim.fn.has("nvim-0.8") == 1 then
 end
 
 vim.opt.conceallevel = 0
+
+opt.clipboard = "unnamedplus"
