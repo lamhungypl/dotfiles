@@ -107,6 +107,8 @@ source $ZSH/oh-my-zsh.sh
 # This bind arrow keys for search in sub history
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+bindkey '^H' backward-kill-word
+
 # vi-mode configuration
 
 bindkey -M viins jk vi-cmd-mode
@@ -154,12 +156,12 @@ alias lg="lazygit"
 alias ls="ls -lah --color=tty"
 alias copy="xclip -sel clip"
 alias code='GTK_IM_MODULE="xim" code'
-alias gstuff='git add --all; git commit -m "stuff" --no-verify'
+alias gstuff='git add --all; git commit -m "wip" --no-verify'
 alias gundo='git reset --soft @~1'
 ide(){
-  tmux split-window -v -p 30
-  tmux split-window -h -p 66
-  tmux split-window -h -p 50
+  tmux split-window -v -l 30%
+  tmux split-window -h -l 66%
+  tmux split-window -h -l 50%
 }
 
 
@@ -174,3 +176,11 @@ export NVM_DIR="$HOME/.nvm"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # alacritty zsh shell completion
 fpath+=${ZDOTDIR:-~}/.zsh_functions
+
+PATH=~/.console-ninja/.bin:$PATH
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/home/ubuntu/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+eval "$(zoxide init --cmd cd zsh)"
