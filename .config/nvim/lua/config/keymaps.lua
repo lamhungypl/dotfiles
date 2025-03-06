@@ -46,20 +46,30 @@ keymap.set("n", "<C-w><right>", "<C-w>>")
 keymap.set("n", "<C-w><up>", "<C-w>+")
 keymap.set("n", "<C-w><down>", "<C-w>-")
 
-
-
-
-keymap.set("i","jj","<Esc>")
-keymap.set("i","jk","<Esc>")
-
-
-
+keymap.set("i", "jj", "<Esc>")
+keymap.set("i", "jk", "<Esc>")
 
 -- Diagnostics
 keymap.set("n", "<C-j>", function()
-	vim.diagnostic.goto_next()
+  vim.diagnostic.goto_next()
 end, opts)
 
 keymap.set("n", "<leader>r", function()
-	require("craftzdog.utils").replaceHexWithHSL()
+  require("craftzdog.utils").replaceHexWithHSL()
 end)
+
+keymap.set("n", ";e", function()
+  local state = require("neo-tree.sources.manager").get_state("filesystem")
+  if state and state.winid and vim.api.nvim_get_current_win() == state.winid then
+    -- If inside Neo-tree, move focus back to editor
+    vim.cmd("wincmd p")
+  else
+    -- Otherwise, open Neo-tree and focus on the current file
+    vim.cmd("Neotree reveal filesystem")
+  end
+end, { desc = "Open File Explorer Neotree" })
+
+keymap.set("n", ";d", "<cmd>BufferLineCloseOthers<CR>", { desc = "Close other buffers" })
+keymap.set("n", "tn", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
+keymap.set("n", "tp", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
+keymap.set("n", ";w", "<cmd>w<CR>", { desc = "Save File" })
