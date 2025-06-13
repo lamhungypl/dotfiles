@@ -68,8 +68,12 @@ keymap.set("n", ";e", function()
     vim.cmd("Neotree reveal filesystem")
   end
 end, { desc = "Open File Explorer Neotree" })
+keymap.set("n", "<C-b>", "<cmd>Neotree toggle<CR>", { noremap = true, silent = true, desc = "Toggle Neo-tree" })
 
 keymap.set("n", ";d", "<cmd>BufferLineCloseOthers<CR>", { desc = "Close other buffers" })
 keymap.set("n", "tn", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
 keymap.set("n", "tp", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
 keymap.set("n", ";w", "<cmd>w<CR>", { desc = "Save File" })
+keymap.set("n", "H", "<C-u>", { desc = "Jump to top", noremap = true, silent = true })
+keymap.set("n", "L", "<C-d>", { desc = "Jump to bottom", noremap = true, silent = true })
+keymap.set("n", "gh", vim.lsp.buf.hover, { noremap = true, silent = true, desc = "LSP Hover" })

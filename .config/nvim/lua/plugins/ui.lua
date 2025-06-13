@@ -6,6 +6,11 @@ return {
         window = {
           position = "right", -- Moves Neo-tree to the right
         },
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
       },
     },
   },
