@@ -84,7 +84,24 @@ return {
       opts.scroll = {
         enable = false,
       }
+      opts.cursor = {
+        enabled = false,
+      }
     end,
+  },
+  {
+    "snacks.nvim",
+    opts = {
+      scroll = {
+        enabled = false,
+      },
+      snacks_animate = {
+        enabled = false,
+      },
+      dashboard = {
+        enabled = false,
+      },
+    },
   },
 
   -- buffer line
