@@ -200,7 +200,7 @@ load-nvmrc
 # Set PATH, MANPATH, etc., for Homebrew.
 
 
-# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 
 # alacritty zsh shell completion
