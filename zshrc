@@ -99,7 +99,7 @@ docker
 zsh-autosuggestions
 zsh-syntax-highlighting
 zsh-history-substring-search
-fig
+#fig
 vi-mode
 )
 
