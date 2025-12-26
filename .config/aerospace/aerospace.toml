@@ -148,8 +148,17 @@ alt-shift-c = 'move-node-to-workspace C'
 alt-shift-d = 'move-node-to-workspace D'
 alt-shift-e = 'move-node-to-workspace E'
 
+[workspace-to-monitor-force-assignment]
+
+
+2 = ['secondary', 'main']
+3 = ['secondary', 'main']
+
+
+
 # Toggle window size
 alt-shift-f = 'fullscreen'
+cmd-alt-shift-f = 'fullscreen'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -158,17 +167,18 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
+cmd-alt-shift-semicolon = 'mode service'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-  esc = ['reload-config', 'mode main']
-  r = ['flatten-workspace-tree', 'mode main'] # reset layout
-  f = [
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main'] # reset layout
+f = [
   'layout tiling tiling',
   'mode main',
-  ] # Toggle between floating and tiling layout
-  backspace = ['close-all-windows-but-current', 'mode main']
+] # Toggle between floating and tiling layout
+backspace = ['close-all-windows-but-current', 'mode main']
 
 # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 #s = ['layout sticky tiling', 'mode main']
