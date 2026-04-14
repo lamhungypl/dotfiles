@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "metadata.schema.json",
+  "title": "Release Metadata",
+  "description": "Structured output of the Metadata Agent — derived from inputs/figma/, inputs/qa/, inputs/docs/. Input to the PO Agent.",
+  "type": "object",
+  "required": ["schema_version", "release", "features"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    },
+    "release": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Feature"
+      }
+    }
+  },
+  "definitions": {
+    "Feature": {
+      "type": "object",
+      "required": ["id", "name", "area", "description", "requirements"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Feature identifier (e.g. 'F-001')",
+          "pattern": "^F-\\d+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Short name of the feature"
+        },
+        "area": {
+          "type": "string",
+          "description": "UI area or module (maps to src/modules/{area}/)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Summary of the feature from inputs"
+        },
+        "source": {
+          "type": "array",
+          "description": "Input files that informed this feature",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requirements": {
+          "type": "array",
+          "description": "Discrete requirements derived from the feature",
+          "items": {
+            "$ref": "#/definitions/Requirement"
+          }
+        }
+      }
+    },
+    "Requirement": {
+      "type": "object",
+      "required": ["id", "description", "currentState", "targetState"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Requirement ID (e.g. 'R-001')",
+          "pattern": "^R-\\d+$"
+        },
+        "description": {
+          "type": "string"
+        },
+        "currentState": {
+          "type": "string",
+          "description": "S1 — current app behavior"
+        },
+        "targetState": {
+          "type": "string",
+          "description": "S2 — desired app behavior"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"]
+        },
+        "figmaRef": {
+          "type": "string",
+          "description": "Path to relevant Figma screenshot in inputs/figma/"
+        }
+      }
+    }
+  }
+}

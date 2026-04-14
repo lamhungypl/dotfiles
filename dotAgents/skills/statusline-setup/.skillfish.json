@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "statusline-setup",
+  "owner": "kacper99",
+  "repo": "kacpers-marketplace",
+  "path": "plugins/essentials/skills/statusline-setup",
+  "branch": "main",
+  "sha": "88491e2491ba90ed4e3bb138e496973feca6cb01",
+  "source": "manual"
+}

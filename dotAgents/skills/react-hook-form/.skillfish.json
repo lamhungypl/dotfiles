@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "web-forms-react-hook-form",
+  "owner": "agents-inc",
+  "repo": "skills",
+  "path": "dist/plugins/web-forms-react-hook-form/skills/web-forms-react-hook-form",
+  "branch": "main",
+  "sha": "bc5074f13a7f087f8e6a89f92ce8fc489bc0ee28",
+  "source": "manual"
+}
