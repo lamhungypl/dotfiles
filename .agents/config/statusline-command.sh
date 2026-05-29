@@ -69,15 +69,20 @@ CTX_BG=$'\033[46m'      # cyan bg
 RATE_COLOR=$'\033[35m'  # magenta fg
 RATE_BG=$'\033[45m'     # magenta bg
 
+# Model name
+model_name=$(echo "$input" | jq -r '.model.display_name // empty')
+
 # ── Line 2: context bar ───────────────────────────────────────────────────────
 context_used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+model_str=""
+[ -n "$model_name" ] && model_str="  ·  ${model_name}"
 if [ -n "$context_used" ]; then
     used_int=$(printf "%.0f" "$context_used")
     bar=$(make_bar "$context_used" "$CTX_COLOR" "ctx" "$CTX_BG")
-    printf "%s  %s%3d%%\033[0m\n" "$bar" "$CTX_COLOR" "$used_int"
+    printf "%s  %s%3d%%%s\033[0m\n" "$bar" "$CTX_COLOR" "$used_int" "$model_str"
 else
     bar=$(make_bar "0" "$CTX_COLOR" "ctx" "$CTX_BG")
-    printf "%s  %s---\033[0m\n" "$bar" "$CTX_COLOR"
+    printf "%s  %s---%s\033[0m\n" "$bar" "$CTX_COLOR" "$model_str"
 fi
 
 # ── Line 3: 5h rate bar + reset time ─────────────────────────────────────────
