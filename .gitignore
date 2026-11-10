@@ -1,2 +1,16 @@
 tmux*.log
 .tmp*
+
+# Credentials
+dotAgents/.env.local
+dotAgents/.env
+
+# External/installed skills (reinstall per machine)
+dotAgents/skills/find-skills/
+dotAgents/skills/shadcn/
+
+# Company-specific skills (not shareable)
+dotAgents/skills/_company/
+
+# macOS
+.DS_Store

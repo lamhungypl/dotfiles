@@ -1,3 +1,4 @@
+// Zed keymap — aligned with VSCode (vim mode)
 [
   {
     "context": "Editor && vim_mode == insert",
@@ -6,13 +7,26 @@
     }
   },
   {
-    "context": "Editor && vim_mode == normal",
+    // VSCode: vim.mode == 'Normal' || vim.mode == 'Visual'
+    "context": "Editor && (vim_mode == normal || vim_mode == visual)",
     "bindings": {
       "; w": "workspace::Save",
       "; e": "project_panel::ToggleFocus",
-      "; r": "pane::CloseItemsToTheRight",
+      "; r": "pane::DeploySearch",
+      "; f": "file_finder::Toggle",
+      "; d": "pane::CloseInactiveItems",
+      "; o": "outline_panel::ToggleFocus",
+      "; g": "git_graph::Open",
+      "alt-n alt-p": "workspace::ActivatePreviousPane",
+      "alt-n alt-n": "workspace::ActivateNextPane",
+      "ctrl-shift-alt-=": "vim::ResizePaneRight",
+      "ctrl-shift-alt--": "vim::ResizePaneLeft",
+
+      // Zed-only extras (not in VSCode). NOTE: these shadow vim's
+      // `t{char}`, `s` and `n` (next search match) — a single `t`/`s`/`n`
+      // now waits for the keymap timeout before running.
       "t n": "pane::ActivateNextItem",
-      "t p": "pane::ActivatePrevItem",
+      "t p": "pane::ActivatePreviousItem",
       "s v": "pane::SplitRight",
       "s h": "pane::SplitDown",
       "n p": ["workspace::ActivatePaneInDirection", "Left"],
@@ -20,17 +34,29 @@
     }
   },
   {
-    "context": "Editor",
-    "bindings": {}
-  },
-  {
+    // VSCode explorer: a/r/c/p/d (filesExplorerFocus && !inputFocus)
+    "context": "ProjectPanel && not_editing",
     "bindings": {
+      "a": "project_panel::NewFile",
+      "r": "project_panel::Rename",
+      "c": "project_panel::Copy",
+      "p": "project_panel::Paste",
+      "d": ["project_panel::Delete", { "skip_prompt": false }],
       "; f": "file_finder::Toggle",
-      "; d": "pane::CloseInactiveItems"
+      "; r": "pane::DeploySearch",
+      "; e": "project_panel::ToggleFocus",
+      "; g": "git_graph::Open",
+      // pane actions don't reach the panel: jump back to the editor, then run `; d` there
+      "; d": ["workspace::SendKeystrokes", "; e ; d"],
+      "ctrl-n": "project_panel::NewFile",
+      "cmd-n": "project_panel::NewFile",
+      "alt-cmd-n": "project_panel::NewDirectory"
     }
   },
   {
-    "context": "Workspace && vim_mode == normal",
-    "bindings": {}
+    "context": "Workspace",
+    "bindings": {
+      "alt-cmd-n": "project_panel::NewDirectory"
+    }
   }
 ]

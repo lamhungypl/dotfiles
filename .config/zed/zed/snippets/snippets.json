@@ -1,4 +1,29 @@
 {
+  "Log Variables": {
+    "prefix": "logvs",
+    "body": ["console.log('Logged', {$1})"],
+    "description": "Log variables as object"
+  },
+  "Log Variable": {
+    "prefix": "logv",
+    "body": ["console.log('Logged $1', $1)"],
+    "description": "Log variable"
+  },
+  "Print to console": {
+    "prefix": "log",
+    "body": ["console.log('$1');", "$2"],
+    "description": "Log output to the console"
+  },
+  "Redux action": {
+    "prefix": "redux-action",
+    "body": ["{type:${1:actionType},payload?:${2:payloadType}}"],
+    "description": "Redux action type"
+  },
+  "Export interface": {
+    "prefix": ["expit", "export interface"],
+    "body": ["export interface ${1:InterfaceName}{", "$2", "}$3"],
+    "description": "Export interface"
+  },
   "Destructure object": {
     "scope": "javascript,typescript,typescriptreact",
     "prefix": "deso",

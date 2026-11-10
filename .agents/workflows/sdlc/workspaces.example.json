@@ -1,0 +1,7 @@
+{
+  "_comment": "Copy this file to workspaces.json (gitignored) and fill in your local absolute paths.",
+  "project": "TB",
+  "workspace": "/absolute/path/to/teams-board",
+  "e2e": "/absolute/path/to/teams-board/apps/teams-board-web-fe-e2e",
+  "frontend": "/absolute/path/to/teams-board/apps/teams-board-web-fe"
+}

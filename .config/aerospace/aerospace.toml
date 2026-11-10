@@ -64,6 +64,17 @@ outer.bottom = 4
 outer.top = 4
 outer.right = 4
 
+
+[workspace-to-monitor-force-assignment]
+
+
+2 = ['secondary', 'main']
+3 = ['secondary', 'main']
+B = ['secondary', 'main']
+C = ['secondary', 'main']
+D = ['secondary', 'main']
+E = ['secondary', 'main']
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
@@ -132,6 +143,7 @@ alt-c = 'workspace C' # In your config, you can drop workspace bindings that you
 alt-d = 'workspace D' # In your config, you can drop workspace bindings that you don't need
 alt-e = 'workspace E' # In your config, you can drop workspace bindings that you don't need
 
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
@@ -148,17 +160,10 @@ alt-shift-c = 'move-node-to-workspace C'
 alt-shift-d = 'move-node-to-workspace D'
 alt-shift-e = 'move-node-to-workspace E'
 
-[workspace-to-monitor-force-assignment]
-
-
-2 = ['secondary', 'main']
-3 = ['secondary', 'main']
-
 
 
 # Toggle window size
 alt-shift-f = 'fullscreen'
-cmd-alt-shift-f = 'fullscreen'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -168,6 +173,10 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
 cmd-alt-shift-semicolon = 'mode service'
+
+
+
+
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -208,6 +217,8 @@ shift-down = ['volume set 0', 'mode main']
     run = ['move-node-to-workspace 6']
 
 
+
+
 [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = ['move-node-to-workspace 1']
@@ -227,12 +238,9 @@ shift-down = ['volume set 0', 'mode main']
 
 
 [[on-window-detected]]
-    if.app-id = 'com.utmapp.UTM'
-    run = ['move-node-to-workspace E']
+    if.app-name-regex-substring = 'Postman'
+    run = ['move-node-to-workspace 7']
 
-[[on-window-detected]]
-    if.app-id = 'com.vng.zalo'
-    run = ['move-node-to-workspace A']
 
 
 [[on-window-detected]]
@@ -242,3 +250,14 @@ shift-down = ['volume set 0', 'mode main']
 [[on-window-detected]]
     if.app-id = 'com.xiaomi.hyperConnect'
     run = ['move-node-to-workspace 9']
+
+[[on-window-detected]]
+    if.app-id = 'com.utmapp.UTM'
+    run = ['move-node-to-workspace E']
+
+[[on-window-detected]]
+    if.app-id = 'com.vng.zalo'
+    run = ['move-node-to-workspace A']
+
+
+
