@@ -7,6 +7,16 @@
     }
   },
   {
+    // VSCodeVim-like H/L: VSCodeVim jumps to the last (partially) visible line,
+    // so VSCode scrolls to reveal it and repeating keeps scrolling (~5 lines
+    // observed). Emulate: screen top/bottom + 5 lines. Native Zed H/L stop at the edge.
+    "context": "Editor && (vim_mode == normal || vim_mode == visual)",
+    "bindings": {
+      "shift-h": ["action::Sequence", ["vim::WindowTop", ["workspace::SendKeystrokes", "5 k"]]],
+      "shift-l": ["action::Sequence", ["vim::WindowBottom", ["workspace::SendKeystrokes", "5 j"]]]
+    }
+  },
+  {
     // VSCode: vim.mode == 'Normal' || vim.mode == 'Visual'
     "context": "Editor && (vim_mode == normal || vim_mode == visual)",
     "bindings": {

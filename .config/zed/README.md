@@ -13,6 +13,12 @@ cp .config/zed/zed/settings.json .config/zed/zed/keymap.json ~/.config/zed/
 cp .config/zed/zed/snippets/*.json ~/.config/zed/snippets/
 ```
 
+Enable key repeat when holding `h`/`j`/`k`/`l` in vim mode (disable macOS press-and-hold accents for Zed):
+
+```bash
+defaults write dev.zed.Zed ApplePressAndHoldEnabled -bool false   # then restart Zed
+```
+
 Zed hot-reloads config files. `text_rendering_mode` needs a Zed restart.
 
 ```
@@ -42,6 +48,7 @@ Zed hot-reloads config files. `text_rendering_mode` needs a Zed restart.
 | `; g` | `git_graph::Open` | Git Graph (built-in, no extension needed) |
 | `alt-n alt-p` / `alt-n alt-n` | `workspace::ActivatePreviousPane` / `ActivateNextPane` | switch pane |
 | `ctrl-shift-alt-=` / `ctrl-shift-alt--` | `vim::ResizePaneRight` / `ResizePaneLeft` | resize pane |
+| `H` / `L` | `action::Sequence [vim::WindowTop, "5 k"]` / `[vim::WindowBottom, "5 j"]` | like VSCodeVim: jump to screen top/bottom, each repeat scrolls 5 lines |
 
 **Zed-only extras** (not in VSCode):
 
