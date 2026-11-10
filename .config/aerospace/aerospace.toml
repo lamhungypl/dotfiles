@@ -259,5 +259,17 @@ shift-down = ['volume set 0', 'mode main']
     if.app-id = 'com.vng.zalo'
     run = ['move-node-to-workspace A']
 
+[[on-window-detected]]
+    if.app-id = 'dev.zed.Zed'
+    run = ['move-node-to-workspace A']
+
+[[on-window-detected]]
+    if.app-id = 'com.docker.docker'
+    run = ['move-node-to-workspace 9']
+
+[[on-window-detected]]
+    if.app-id = 'dev.pencil.desktop'
+    run = ['move-node-to-workspace D']
+
 
 
