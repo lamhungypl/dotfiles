@@ -1,53 +1,127 @@
-// Zed settings
+// Zed settings — aligned with VSCode
 //
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run the `open default settings` command
-// from the command palette or from `Zed` application menu.
+// Docs: https://zed.dev/docs/configuring-zed
+// Default settings: `zed: open default settings` (cmd-shift-p)
 {
-  "features": {
-    "inline_completion_provider": "none"
-  },
-  "relative_line_numbers": true,
-  "theme": "GitHub Dark Default",
+  "base_keymap": "VSCode",
   "vim_mode": true,
+  // cmd-o: type/paste any absolute path (file finder only matches files inside the project)
+  "use_system_path_prompts": false,
+  "vim": {
+    "use_system_clipboard": "always",
+    "enable_vim_sneak": true
+  },
+
+  // Appearance
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "GitHub Dark"
+  },
+  "icon_theme": "Material Icon Theme",
+  "auto_install_extensions": {
+    "github-theme": true,
+    "material-icon-theme": true,
+    "html": true
+  },
+  // Sizes match VSCode macOS defaults: editor/terminal 12; UI bumped to 14 (Zed renders UI smaller than VSCode 13)
   "ui_font_size": 14,
-  "buffer_font_size": 14,
+  "ui_font_family": ".SystemUIFont",
+  "buffer_font_size": 12,
   "buffer_font_family": "MesloLGS NF",
+  "buffer_font_fallbacks": ["Meslo LG M DZ for Powerline", "Hack Nerd Font Mono"],
+  "buffer_font_weight": 400,
+  "buffer_line_height": { "custom": 1.5 },
+  // VSCode (Chromium) renders grayscale on macOS; Zed default looks bolder
+  "text_rendering_mode": "grayscale",
+  "relative_line_numbers": "enabled",
+  "gutter": { "line_numbers": true },
+  "minimap": { "show": "never" },
+  "wrap_guides": [80],
+  "project_panel": {
+    "dock": "right",
+    "default_width": 280,
+    "indent_size": 12,
+    // no horizontal scroll: long names get truncated with an ellipsis like VSCode
+    "scrollbar": { "show": "auto", "horizontal_scroll": false }
+  },
+  "preview_tabs": { "enabled": false },
+
+  // Editing
+  "tab_size": 2,
+  "autosave": "on_focus_change",
+  "format_on_save": "on",
+  "edit_predictions": { "provider": "none" },
+  "inlay_hints": { "enabled": true },
+  "file_scan_exclusions": ["**/.git", "**/.yarn", "**/node_modules", "**/.DS_Store"],
+
+  // Prettier fallback (project .prettierrc wins when present)
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2,
+    "printWidth": 120,
+    "arrowParens": "avoid",
+    "trailingComma": "es5"
+  },
+
+  // ESLint fixAll on save, then Prettier (VSCode codeActionsOnSave)
   "languages": {
     "TypeScript": {
-      "code_actions_on_format": {
-        "source.fixAll.eslint": true
-      }
-      // "formatter": "language_server"
-      // "formatter": {
-      //   "code_actions": {
-      //     "source.filAll.eslint": true
-      //   },
-      //   // "external": {
-      //   //   "command": "eslint",
-      //   //   "arguments": ["-c", "./.eslintrc", "--fix"]
-      //   // },
-      //   "external": {
-      //     "command": "zsh", // Shell command interpreter
-      //     "arguments": [
-      //       "-c",
-      //       "npx prettier --config ./.prettierrc.js {buffer_path}"
-      //     ]
-      //   }
-      // }
+      "formatter": [{ "code_action": "source.fixAll.eslint" }, "prettier"]
+    },
+    "TSX": {
+      "formatter": [{ "code_action": "source.fixAll.eslint" }, "prettier"]
+    },
+    "JavaScript": {
+      "formatter": [{ "code_action": "source.fixAll.eslint" }, "prettier"]
     }
   },
+
   "lsp": {
     "typescript-language-server": {
       "initialization_options": {
         "preferences": {
-          // "importModuleSpecifierPreference": "non-relative",
-          // "importModuleSpecifier": "non-relative"
+          "includeInlayParameterNameHints": "literals"
+        }
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "updateImportsOnFileMove": { "enabled": "always" },
+          "inlayHints": { "parameterNames": { "enabled": "literals" } }
+        }
+      }
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "classAttributes": ["class", "className", "ngClass", "classes"],
+        "classFunctions": ["cva", "cx"],
+        "experimental": {
+          "classRegex": [
+            "\\S*[C|c]lass\\S*=[\"|']([^'\"]*)",
+            "\\S*[C|c]lass\\S*={[\"|'|`]([^'\"]*)",
+            ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+            ["cva<.*>\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+            ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+            ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+          ]
         }
       }
     }
+  },
+
+  // Terminal (kept from previous ~/.config/zed/settings.json)
+  "terminal": {
+    "env": { "FIG_NEW_SESSION": "\"1\"" },
+    "font_family": "MesloLGS NF",
+    "font_size": 12,
+    "line_height": "standard",
+    "font_fallbacks": ["Meslo LG M DZ for Powerline", "Hack Nerd Font Mono"]
+  },
+
+  // AI agents (kept from previous ~/.config/zed/settings.json)
+  "agent_servers": {
+    "claude-acp": { "type": "registry" }
   }
 }
