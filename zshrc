@@ -159,9 +159,12 @@ alias code='GTK_IM_MODULE="xim" code'
 alias gstuff='git add --all; git commit -m "wip" --no-verify'
 alias gundo='git reset --soft @~1'
 ide(){
+  local top=$(tmux display-message -p '#{pane_id}')
   tmux split-window -v -l 30%
   tmux split-window -h -l 66%
   tmux split-window -h -l 50%
+  tmux split-window -h -l 50% -t "$top"
+  tmux select-pane -t "$top"
 }
 
 
