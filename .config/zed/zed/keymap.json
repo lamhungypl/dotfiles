@@ -44,6 +44,17 @@
     }
   },
   {
+    // No file open → no Editor context, so the `;` bindings above don't fire
+    "context": "EmptyPane",
+    "bindings": {
+      "; e": "project_panel::ToggleFocus",
+      "; f": "file_finder::Toggle",
+      "; r": "pane::DeploySearch",
+      "; o": "outline_panel::ToggleFocus",
+      "; g": "git_graph::Open"
+    }
+  },
+  {
     // VSCode explorer: a/r/c/p/d (filesExplorerFocus && !inputFocus)
     "context": "ProjectPanel && not_editing",
     "bindings": {
