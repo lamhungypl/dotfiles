@@ -214,5 +214,5 @@ fpath+=${ZDOTDIR:-~}/.zsh_functions
 eval "$(zoxide init --cmd cd zsh)"
 
 # Added by Windsurf
-export PATH="/Users/gotit/.codeium/windsurf/bin:$PATH"
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
