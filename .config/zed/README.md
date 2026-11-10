@@ -2,6 +2,8 @@
 
 Zed (v1.27) config aligned with my VSCode setup (vim mode).
 
+![Zed with this config](images/zed-screenshot.png)
+
 ## Install
 
 ```bash
@@ -16,6 +18,7 @@ Zed hot-reloads config files. `text_rendering_mode` needs a Zed restart.
 ```
 .config/zed/
 ├── README.md            # this file (not copied)
+├── images/              # README screenshots (not copied)
 └── zed/                 # → ~/.config/zed/
     ├── settings.json
     ├── keymap.json
