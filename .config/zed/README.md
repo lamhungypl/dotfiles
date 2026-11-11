@@ -80,6 +80,14 @@ Zed hot-reloads config files. `text_rendering_mode` needs a Zed restart.
 | `; f` / `; r` / `; e` / `; g` | same as in the editor |
 | `; d` | `SendKeystrokes "; e ; d"` — jump back to the editor, then close other tabs (pane actions don't reach the panel) |
 
+### Empty pane (`EmptyPane || SharedScreen`)
+
+With no file open there is no `Editor` context, so the editor `;` bindings don't fire — they are repeated here.
+
+| Keys | Action |
+|---|---|
+| `; f` / `; r` / `; e` / `; g` | same as in the editor |
+
 ### Terminal (`Terminal`)
 
 The terminal has no normal mode, so a bare `;` prefix would hijack shell typing (`a; b`) — `ctrl-;` is the prefix instead.

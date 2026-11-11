@@ -77,6 +77,18 @@
     }
   },
   {
+    // Empty pane (no file open) has no Editor context, so the `;` editor
+    // bindings above never fire there. Nothing is typed in an empty pane,
+    // so a bare `;` prefix is safe.
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "; f": "file_finder::Toggle",
+      "; r": "pane::DeploySearch",
+      "; e": "project_panel::ToggleFocus",
+      "; g": "git_graph::Open"
+    }
+  },
+  {
     "context": "Workspace",
     "bindings": {
       "alt-cmd-n": "project_panel::NewDirectory"
