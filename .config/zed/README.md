@@ -143,7 +143,7 @@ The terminal has no normal mode, so a bare `;` prefix would hijack shell typing 
   — ESLint fixAll, then Prettier on save (like `editor.codeActionsOnSave`)
 
 ### LSP
-- `typescript-language-server` / `vtsls`: parameter-name inlay hints for `literals`, update imports on file move
+- `typescript-language-server` / `vtsls`: inlay hints like VSCode — only parameter names for `literals` (return / parameter / property / variable / enum hints off; hover with `K` for types), update imports on file move
 - `tailwindcss-language-server`: `classAttributes`, `classFunctions` (`cva`, `cx`), `experimental.classRegex` for `cva`/`cx`/`cn` — ported from VSCode
 
 ### Terminal

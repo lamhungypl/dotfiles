@@ -87,27 +87,23 @@ return {
     end,
   },
 
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      max_width = 50,
-      timeout = 30,
-    },
-  },
-
-  -- animations: off (window open/close/resize animations made everything feel laggy)
-  { "nvim-mini/mini.animate", enabled = false },
+  -- animations: off via `vim.g.snacks_animate = false` (options.lua)
   {
     "snacks.nvim",
     opts = {
       scroll = {
         enabled = false,
       },
-      animate = {
-        enabled = false,
-      },
       dashboard = {
-        enabled = false,
+        preset = {
+          header = [[
+██████╗ ███████╗██╗   ██╗ █████╗ ███████╗██╗     ██╗███████╗███████╗
+██╔══██╗██╔════╝██║   ██║██╔══██╗██╔════╝██║     ██║██╔════╝██╔════╝
+██║  ██║█████╗  ██║   ██║███████║███████╗██║     ██║█████╗  █████╗
+██║  ██║██╔══╝  ╚██╗ ██╔╝██╔══██║╚════██║██║     ██║██╔══╝  ██╔══╝
+██████╔╝███████╗ ╚████╔╝ ██║  ██║███████║███████╗██║██║     ███████╗
+╚═════╝ ╚══════╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝╚═╝     ╚══════╝]],
+        },
       },
     },
   },
@@ -180,26 +176,5 @@ return {
       },
     },
     keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
-  },
-
-  {
-    "nvimdev/dashboard-nvim",
-    event = "VimEnter",
-    opts = function(_, opts)
-      opts.config = opts.config or {}
-
-      local logo = [[
-        ██████╗ ███████╗██╗   ██╗ █████╗ ███████╗██╗     ██╗███████╗███████╗
-        ██╔══██╗██╔════╝██║   ██║██╔══██╗██╔════╝██║     ██║██╔════╝██╔════╝
-        ██║  ██║█████╗  ██║   ██║███████║███████╗██║     ██║█████╗  █████╗  
-        ██║  ██║██╔══╝  ╚██╗ ██╔╝██╔══██║╚════██║██║     ██║██╔══╝  ██╔══╝  
-        ██████╔╝███████╗ ╚████╔╝ ██║  ██║███████║███████╗██║██║     ███████╗
-        ╚═════╝ ╚══════╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝╚═╝     ╚══════╝
-      ]]
-
-      logo = string.rep("\n", 8) .. logo .. "\n\n"
-
-      opts.config.header = vim.split(logo, "\n")
-    end,
   },
 }

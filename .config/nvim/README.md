@@ -1,6 +1,6 @@
 # Neovim config (LazyVim)
 
-[LazyVim](https://lazyvim.github.io) config (Neovim 0.11), kept in line with my [Zed config](../zed/README.md):
+[LazyVim](https://lazyvim.github.io) 16 config (Neovim 0.12), kept in line with my [Zed config](../zed/README.md):
 same `;` shortcuts, explorer on the right, GitHub Dark theme.
 
 ![nvim with Neo-tree on the right](images/nvim-neotree.png)
@@ -10,13 +10,15 @@ same `;` shortcuts, explorer on the right, GitHub Dark theme.
 ## Install
 
 ```bash
-cp -R ~/.config/nvim ~/.config/nvim.bak-$(date +%Y%m%d-%H%M%S)   # backup
-rsync -a --exclude README.md --exclude images .config/nvim/ ~/.config/nvim/
-nvim --headless "+Lazy! install" +qa                              # install new plugins
+brew install neovim tree-sitter-cli fd ripgrep lazygit      # nvim >= 0.12; tree-sitter CLI builds parsers
+mv ~/.config/nvim ~/.config/nvim.bak-$(date +%Y%m%d-%H%M%S)   # backup
+ln -s "$PWD/.config/nvim" ~/.config/nvim                      # symlink: edits in the repo apply directly
+nvim --headless "+Lazy! restore" +qa                           # install plugins at lazy-lock.json versions
 ```
 
-`~/.config/nvim` is a **copy**, not a symlink. After changing it in place, copy the files back to the repo
-(including `lazy-lock.json`, which lazy.nvim rewrites).
+`~/.config/nvim` is a **symlink** to this folder, so `lazy-lock.json` updates land in the repo.
+After changing config: `:restart` (Neovim 0.12), then `<leader>qs` to restore the session —
+or `:source %` for `config/*.lua`, `:Lazy reload <plugin>` for plugin opts.
 
 ```
 .config/nvim/
@@ -75,7 +77,7 @@ Leader is `<Space>`. Only custom keys are listed — LazyVim defaults (`<leader>
 | `<leader>o` / `<leader>O` | new line below / above without continuing a comment |
 | `<leader>r` | normal: hex → HSL · visual: refactor menu |
 | `<leader>cc` | generate doc comment (neogen) |
-| `<leader>cs` | symbols outline |
+| `<leader>cs` | symbols (Trouble — LazyVim default, same as `;o`) |
 | `<leader>gb` / `<leader>go` | git blame / open in browser |
 | `<leader>z` | zen mode |
 
@@ -88,7 +90,8 @@ Leader is `<Space>`. Only custom keys are listed — LazyVim defaults (`<leader>
 ### Look
 - Colorscheme `github_dark` (`projekt0n/github-nvim-theme`, `transparent = true` so WezTerm's opacity/blur shows through);
   lualine `theme = "auto"`, incline uses `TabLineSel`/`TabLine` — one palette everywhere, same as Zed and WezTerm.
-- No animations: `mini.animate` disabled, `vim.g.snacks_animate = false`, snacks scroll off.
+- No animations: `vim.g.snacks_animate = false`, snacks scroll off.
+- Start screen: `snacks.dashboard` with the DEVASLIFE logo.
 - `colorcolumn = 80` (Zed `wrap_guides`), relative numbers (LazyVim default).
 
 ### Explorer (Neo-tree)
@@ -96,7 +99,10 @@ Leader is `<Space>`. Only custom keys are listed — LazyVim defaults (`<leader>
 - Dotfiles and gitignored files shown; `.git`, `.yarn`, `node_modules`, `.DS_Store` never shown (Zed `file_scan_exclusions`).
 
 ### Editing
-- Autosave on `FocusLost` / `BufLeave` (Zed `autosave: on_focus_change`) — saving runs format-on-save + `EslintFixAll`.
+- Autosave on `FocusLost` / `BufLeave` (Zed `autosave: on_focus_change`) — saving runs format-on-save + ESLint fix (`linting.eslint` extra).
 - System clipboard, `shiftwidth = 2`, `shell = zsh`.
 - Extras: eslint, prettier, typescript, json, rust, tailwind, yaml, markdown, telescope, mini-hipatterns.
 - Tailwind LSP: `classAttributes`, `classFunctions` (`cva`, `cx`) and `classRegex` for `cva`/`cx`/`cn` — same as Zed.
+- TypeScript LSP: `vtsls`. Inlay hints like VSCode — only parameter names for literal arguments
+  (no return / parameter / property / variable types; `K` shows a type).
+- Completion: blink.cmp (+ `blink-emoji`). Refactoring: `refactoring.nvim` 2.x (needs `async.nvim`), visual `<leader>r`.

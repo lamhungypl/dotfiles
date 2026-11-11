@@ -79,10 +79,18 @@
   },
 
   "lsp": {
+    // Inlay hints like VSCode: only parameter names for literal arguments
+    // (Zed's defaults also show return / parameter / variable types)
     "typescript-language-server": {
       "initialization_options": {
         "preferences": {
-          "includeInlayParameterNameHints": "literals"
+          "includeInlayParameterNameHints": "literals",
+          "includeInlayParameterNameHintsWhenArgumentMatchesName": false,
+          "includeInlayFunctionParameterTypeHints": false,
+          "includeInlayVariableTypeHints": false,
+          "includeInlayPropertyDeclarationTypeHints": false,
+          "includeInlayFunctionLikeReturnTypeHints": false,
+          "includeInlayEnumMemberValueHints": false
         }
       }
     },
@@ -90,7 +98,25 @@
       "settings": {
         "typescript": {
           "updateImportsOnFileMove": { "enabled": "always" },
-          "inlayHints": { "parameterNames": { "enabled": "literals" } }
+          "inlayHints": {
+            "parameterNames": { "enabled": "literals", "suppressWhenArgumentMatchesName": true },
+            "functionLikeReturnTypes": { "enabled": false },
+            "parameterTypes": { "enabled": false },
+            "propertyDeclarationTypes": { "enabled": false },
+            "variableTypes": { "enabled": false },
+            "enumMemberValues": { "enabled": false }
+          }
+        },
+        "javascript": {
+          "updateImportsOnFileMove": { "enabled": "always" },
+          "inlayHints": {
+            "parameterNames": { "enabled": "literals", "suppressWhenArgumentMatchesName": true },
+            "functionLikeReturnTypes": { "enabled": false },
+            "parameterTypes": { "enabled": false },
+            "propertyDeclarationTypes": { "enabled": false },
+            "variableTypes": { "enabled": false },
+            "enumMemberValues": { "enabled": false }
+          }
         }
       }
     },

@@ -12,7 +12,7 @@ function M.get_loc()
   end
   info = info or me
   local source = info.source:sub(2)
-  source = vim.loop.fs_realpath(source) or source
+  source = vim.uv.fs_realpath(source) or source
   return source .. ":" .. info.linedefined
 end
 
@@ -47,7 +47,7 @@ function M.dump(...)
   if vim.tbl_isempty(value) then
     value = nil
   else
-    value = vim.tbl_islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
+    value = vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
   end
   M._dump(value)
 end
