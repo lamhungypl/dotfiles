@@ -18,11 +18,15 @@ return {
       },
       event_handlers = {
         {
-          -- keep the width when splitting / `<C-w>=`
           event = "neo_tree_window_after_open",
           handler = function(args)
             if args.winid and vim.api.nvim_win_is_valid(args.winid) then
+              -- keep the width when splitting / `<C-w>=`
               vim.wo[args.winid].winfixwidth = true
+              -- no sideways scroll (Zed `horizontal_scroll: false`): Neo-tree cuts lines to the
+              -- window width, so the global sidescrolloff=8 shifted the view when the cursor
+              -- reached the end of a full-width line (e.g. the root path)
+              vim.wo[args.winid].sidescrolloff = 0
             end
           end,
         },
