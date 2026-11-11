@@ -65,15 +65,30 @@ outer.top = 4
 outer.right = 4
 
 
+
+
+
 [workspace-to-monitor-force-assignment]
 
 
-2 = ['secondary', 'main']
-3 = ['secondary', 'main']
-B = ['secondary', 'main']
-C = ['secondary', 'main']
-D = ['secondary', 'main']
-E = ['secondary', 'main']
+2 = [1, 'main']
+3 = [1, 'main']
+
+6 = [3, 'main']
+7 = [3, 'main']
+8 = [3, 'main']
+
+B = [1, 'main']
+C = [1,'main']
+D = [1, 'main']
+E = [1, 'main']
+
+
+
+# 1 | DELL U2417H (2)
+# 2 | Built-in Retina Display
+# 3 | DELL U2417H (1)
+
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -218,7 +233,6 @@ shift-down = ['volume set 0', 'mode main']
 
 
 
-
 [[on-window-detected]]
     if.app-id = 'com.microsoft.VSCode'
     run = ['move-node-to-workspace 1']
@@ -244,12 +258,24 @@ shift-down = ['volume set 0', 'mode main']
 
 
 [[on-window-detected]]
+    if.app-name-regex-substring = 'OrbStack'
+    run = ['move-node-to-workspace 8']
+
+
+[[on-window-detected]]
     if.app-id = 'com.soda.music.helper'
     run = ['move-node-to-workspace 9']
 
 [[on-window-detected]]
     if.app-id = 'com.xiaomi.hyperConnect'
     run = ['move-node-to-workspace 9']
+
+
+[[on-window-detected]]
+    if.app-id = 'com.electron.dockerdesktop'
+    run = ['move-node-to-workspace 9']
+
+
 
 [[on-window-detected]]
     if.app-id = 'com.utmapp.UTM'
@@ -259,17 +285,12 @@ shift-down = ['volume set 0', 'mode main']
     if.app-id = 'com.vng.zalo'
     run = ['move-node-to-workspace A']
 
+
+
 [[on-window-detected]]
     if.app-id = 'dev.zed.Zed'
     run = ['move-node-to-workspace A']
 
 [[on-window-detected]]
-    if.app-id = 'com.docker.docker'
-    run = ['move-node-to-workspace 9']
-
-[[on-window-detected]]
     if.app-id = 'dev.pencil.desktop'
     run = ['move-node-to-workspace D']
-
-
-
