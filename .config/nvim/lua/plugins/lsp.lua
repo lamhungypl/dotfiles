@@ -14,6 +14,55 @@ return {
 		},
 	},
 
+	-- `gd` like VSCode/Zed: on the declaration itself, the only definition is the cursor
+	-- position (telescope "jumps" in place, nothing visible) → list the usages instead.
+	-- Appended in an opts function: a `keys` list in an opts table would replace LazyVim's.
+	{
+		"neovim/nvim-lspconfig",
+		opts = function(_, opts)
+			local function definition_or_references()
+				local buf = vim.api.nvim_get_current_buf()
+				local uri = vim.uri_from_bufnr(buf)
+				local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+				vim.lsp.buf_request_all(buf, "textDocument/definition", function(client)
+					return vim.lsp.util.make_position_params(0, client.offset_encoding)
+				end, function(results)
+					local on_declaration = true
+					for _, res in pairs(results) do
+						local locs = res.result or {}
+						if locs.uri or locs.targetUri then
+							locs = { locs }
+						end
+						for _, loc in ipairs(locs) do
+							local range = loc.targetSelectionRange or loc.range
+							if (loc.uri or loc.targetUri) ~= uri or range.start.line ~= line then
+								on_declaration = false
+							end
+						end
+					end
+					vim.schedule(function()
+						local builtin = require("telescope.builtin")
+						if on_declaration then
+							builtin.lsp_references({ include_declaration = false, show_line = true })
+						else
+							builtin.lsp_definitions({ reuse_win = true })
+						end
+					end)
+				end)
+			end
+
+			opts.servers = opts.servers or {}
+			opts.servers["*"] = opts.servers["*"] or {}
+			opts.servers["*"].keys = opts.servers["*"].keys or {}
+			table.insert(opts.servers["*"].keys, {
+				"gd",
+				definition_or_references,
+				desc = "Goto Definition (references when on it)",
+				has = "definition",
+			})
+		end,
+	},
+
 	-- lsp servers (configured through native `vim.lsp.config` by LazyVim)
 	-- TypeScript: vtsls from the `lang.typescript` extra (its defaults already match Zed:
 	-- parameter-name inlay hints for literals, update imports on file move).

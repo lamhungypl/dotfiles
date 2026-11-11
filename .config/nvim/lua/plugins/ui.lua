@@ -144,8 +144,9 @@ return {
       require("incline").setup({
         highlight = {
           groups = {
-            InclineNormal = { group = "TabLineSel" },
-            InclineNormalNC = { group = "TabLine" },
+            -- a link needs both fields: incline's validator rejects `{ group = ... }` alone
+            InclineNormal = { group = "TabLineSel", default = true },
+            InclineNormalNC = { group = "TabLine", default = true },
           },
         },
         window = { margin = { vertical = 0, horizontal = 1 } },
