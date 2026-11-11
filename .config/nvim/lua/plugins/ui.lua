@@ -3,13 +3,28 @@ return {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
       filesystem = {
-        window = {
-          position = "right", -- Moves Neo-tree to the right
-        },
         filtered_items = {
           visible = true,
           hide_dotfiles = false,
           hide_gitignored = false,
+          -- like Zed `file_scan_exclusions`: never listed at all
+          never_show = { ".git", ".yarn", "node_modules", ".DS_Store" },
+        },
+      },
+      -- like Zed `project_panel`: dock right, fixed width (280px ≈ 35 cols)
+      window = {
+        position = "right",
+        width = 35,
+      },
+      event_handlers = {
+        {
+          -- keep the width when splitting / `<C-w>=`
+          event = "neo_tree_window_after_open",
+          handler = function(args)
+            if args.winid and vim.api.nvim_win_is_valid(args.winid) then
+              vim.wo[args.winid].winfixwidth = true
+            end
+          end,
         },
       },
     },
@@ -76,26 +91,15 @@ return {
     },
   },
 
-  -- animations
-  {
-    "nvim-mini/mini.animate",
-    event = "VeryLazy",
-    opts = function(_, opts)
-      opts.scroll = {
-        enable = false,
-      }
-      opts.cursor = {
-        enabled = false,
-      }
-    end,
-  },
+  -- animations: off (window open/close/resize animations made everything feel laggy)
+  { "nvim-mini/mini.animate", enabled = false },
   {
     "snacks.nvim",
     opts = {
       scroll = {
         enabled = false,
       },
-      snacks_animate = {
+      animate = {
         enabled = false,
       },
       dashboard = {
@@ -126,7 +130,7 @@ return {
     opts = {
       options = {
         -- globalstatus = false,
-        theme = "solarized_dark",
+        theme = "auto", -- follows the colorscheme (github_dark)
       },
     },
   },
@@ -134,16 +138,14 @@ return {
   -- filename
   {
     "b0o/incline.nvim",
-    dependencies = { "craftzdog/solarized-osaka.nvim" },
     event = "BufReadPre",
     priority = 1200,
     config = function()
-      local colors = require("solarized-osaka.colors").setup()
       require("incline").setup({
         highlight = {
           groups = {
-            InclineNormal = { guibg = colors.magenta500, guifg = colors.base04 },
-            InclineNormalNC = { guifg = colors.violet500, guibg = colors.base03 },
+            InclineNormal = { group = "TabLineSel" },
+            InclineNormalNC = { group = "TabLine" },
           },
         },
         window = { margin = { vertical = 0, horizontal = 1 } },

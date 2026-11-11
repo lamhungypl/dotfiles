@@ -28,6 +28,20 @@ return {
 					root_dir = function(...)
 						return require("lspconfig.util").root_pattern(".git")(...)
 					end,
+					-- same as Zed / VSCode: classes inside cva / cx / cn
+					settings = {
+						tailwindCSS = {
+							classAttributes = { "class", "className", "ngClass", "classes" },
+							classFunctions = { "cva", "cx" },
+							experimental = {
+								classRegex = {
+									{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+									{ "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+									{ "cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+								},
+							},
+						},
+					},
 				},
 				tsserver = {
 					root_dir = function(...)

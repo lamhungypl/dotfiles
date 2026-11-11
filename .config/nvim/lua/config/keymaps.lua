@@ -74,6 +74,13 @@ keymap.set("n", ";d", "<cmd>BufferLineCloseOthers<CR>", { desc = "Close other bu
 keymap.set("n", "tn", "<cmd>BufferLineCycleNext<CR>", { desc = "Next Buffer" })
 keymap.set("n", "tp", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous Buffer" })
 keymap.set("n", ";w", "<cmd>w<CR>", { desc = "Save File" })
-keymap.set("n", "H", "<C-u>", { desc = "Jump to top", noremap = true, silent = true })
-keymap.set("n", "L", "<C-d>", { desc = "Jump to bottom", noremap = true, silent = true })
+-- Like Zed / VSCodeVim: jump to screen top/bottom, then 5 more lines (repeat keeps scrolling)
+keymap.set({ "n", "x" }, "H", "H5k", { desc = "Screen top, scroll up", noremap = true, silent = true })
+keymap.set({ "n", "x" }, "L", "L5j", { desc = "Screen bottom, scroll down", noremap = true, silent = true })
+
+-- Same `;` shortcuts as Zed
+keymap.set("n", ";g", function()
+  Snacks.lazygit({ cwd = LazyVim.root.git() })
+end, { desc = "Lazygit (like Zed ; g)" })
+keymap.set("n", ";o", "<cmd>Trouble symbols toggle focus=true win.position=right<CR>", { desc = "Outline (like Zed ; o)" })
 keymap.set("n", "gh", vim.lsp.buf.hover, { noremap = true, silent = true, desc = "LSP Hover" })
