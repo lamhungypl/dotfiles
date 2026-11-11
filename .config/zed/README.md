@@ -80,6 +80,15 @@ Zed hot-reloads config files. `text_rendering_mode` needs a Zed restart.
 | `; f` / `; r` / `; e` / `; g` | same as in the editor |
 | `; d` | `SendKeystrokes "; e ; d"` — jump back to the editor, then close other tabs (pane actions don't reach the panel) |
 
+### Terminal (`Terminal`)
+
+The terminal has no normal mode, so a bare `;` prefix would hijack shell typing (`a; b`) — `ctrl-;` is the prefix instead.
+
+| Keys | Action |
+|---|---|
+| `ctrl-; f` / `ctrl-; r` / `ctrl-; e` / `ctrl-; g` | same as `; f` / `; r` / `; e` / `; g` in the editor |
+| `ctrl-; d` | `terminal_panel::ToggleFocus` then `; d` — jump back to the editor, then close other tabs |
+
 ### Notes
 
 - To open a file by **absolute path outside the project**: `cmd-o`, then paste the path.
@@ -91,6 +100,7 @@ Zed hot-reloads config files. `text_rendering_mode` needs a Zed restart.
 
 ### General
 - `base_keymap: VSCode`, `vim_mode: true`
+- `cli_default_open_behavior: new_window` — `zed <path>` from the CLI opens a new window
 - `vim.use_system_clipboard: always`, `vim.enable_vim_sneak: true` (like `vim.sneak`)
 - `use_system_path_prompts: false` — `cmd-o` shows Zed's path prompt (type/paste an absolute path, with autocomplete)
 
