@@ -47,6 +47,8 @@
     "scrollbar": { "show": "auto", "horizontal_scroll": false }
   },
   "preview_tabs": { "enabled": false },
+  // Branch name + git status icon in the title bar (Zed has no branch item in the status bar)
+  "title_bar": { "show_branch_name": true, "show_branch_status_icon": true },
 
   // Editing
   "tab_size": 2,
