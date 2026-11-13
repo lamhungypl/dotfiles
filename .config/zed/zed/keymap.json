@@ -65,10 +65,12 @@
       "d": ["project_panel::Delete", { "skip_prompt": false }],
       "; f": "file_finder::Toggle",
       "; r": "pane::DeploySearch",
-      "; e": "project_panel::ToggleFocus",
+      // back to the editor like VSCode (ToggleFocus restores the previously focused
+      // view in Zed 1.x, which isn't always the editor)
+      "; e": "workspace::FocusCenterPane",
       "; g": "git_graph::Open",
       // pane actions don't reach the panel: jump back to the editor, then run `; d` there
-      "; d": ["workspace::SendKeystrokes", "; e ; d"],
+      "; d": ["action::Sequence", ["workspace::FocusCenterPane", ["workspace::SendKeystrokes", "; d"]]],
       "ctrl-n": "project_panel::NewFile",
       "cmd-n": "project_panel::NewFile",
       "alt-cmd-n": "project_panel::NewDirectory"
