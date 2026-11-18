@@ -17,9 +17,13 @@
   /* Bar background: lower alpha = more transparent (0% = fully clear) */
   --background: rgb(10 10 20 / 25%);
 
-  --pill: rgb(255 255 255 / 10%);
-  --pill-displayed: rgb(255 255 255 / 22%);
-  --pill-focused: rgb(75 115 255 / 70%);
+  /* Workspace pills: dark glass so they stand out on bright wallpapers */
+  --pill: rgb(15 18 30 / 45%);
+  --pill-displayed: rgb(15 18 30 / 65%);
+  --pill-focused: rgb(75 115 255 / 90%);
+  --pill-border: 1px solid rgb(255 255 255 / 18%);
+  --pill-border-focused: 1px solid rgb(160 185 255 / 90%);
+  --pill-shadow: 0 1px 4px rgb(0 0 0 / 45%);
 }
 
 body {
@@ -98,8 +102,9 @@ body,
   padding: 4px 8px;
   color: var(--text-color);
   text-shadow: var(--text-shadow);
-  border: none;
+  border: var(--pill-border);
   border-radius: 4px;
+  box-shadow: var(--pill-shadow);
   cursor: pointer;
 
   &.displayed {
@@ -109,6 +114,8 @@ body,
   &.focused,
   &:hover {
     background: var(--pill-focused);
+    border: var(--pill-border-focused);
+    font-weight: bold;
   }
 }
 
@@ -120,7 +127,8 @@ body,
   border-radius: 4px;
   line-height: 1;
   padding: 4px 8px;
-  border: 0;
+  border: var(--pill-border);
+  box-shadow: var(--pill-shadow);
   cursor: pointer;
 }
 
