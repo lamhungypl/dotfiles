@@ -27,20 +27,19 @@
       "; d": "pane::CloseInactiveItems",
       "; o": "outline_panel::ToggleFocus",
       "; g": "git_graph::Open",
-      "alt-n alt-p": "workspace::ActivatePreviousPane",
-      "alt-n alt-n": "workspace::ActivateNextPane",
       "ctrl-shift-alt-=": "vim::ResizePaneRight",
       "ctrl-shift-alt--": "vim::ResizePaneLeft",
 
       // Zed-only extras (not in VSCode). NOTE: these shadow vim's
-      // `t{char}`, `s` and `n` (next search match) — a single `t`/`s`/`n`
-      // now waits for the keymap timeout before running.
+      // `t{char}` and `s` — a single `t`/`s` now waits for the keymap
+      // timeout before running. `n`/`N` are left alone so they jump to the
+      // next/prev search match instantly (like VSCodeVim). Switch panes with
+      // vim's built-in `ctrl-w h/l` (same in VSCode + LazyVim; alt-n is a
+      // macOS dead key, so VSCode never saw alt-n chords).
       "t n": "pane::ActivateNextItem",
       "t p": "pane::ActivatePreviousItem",
       "s v": "pane::SplitRight",
-      "s h": "pane::SplitDown",
-      "n p": ["workspace::ActivatePaneInDirection", "Left"],
-      "n n": ["workspace::ActivatePaneInDirection", "Right"]
+      "s h": "pane::SplitDown"
     }
   },
   {
