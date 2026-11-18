@@ -79,7 +79,7 @@ outer.right = 4
 8 = [3, 'main']
 
 B = [1, 'main']
-C = [1,'main']
+C = 'main'
 D = [1, 'main']
 E = [1, 'main']
 
