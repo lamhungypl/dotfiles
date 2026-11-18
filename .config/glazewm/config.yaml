@@ -19,7 +19,7 @@ general:
     trigger: 'monitor_focus'
 
   hide_method: 'cloak'
-  show_all_in_taskbar: false
+  show_all_in_taskbar: true
 
 # aerospace: inner 6 / outer 4
 gaps:
