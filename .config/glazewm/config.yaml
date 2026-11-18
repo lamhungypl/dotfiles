@@ -127,6 +127,20 @@ window_rules:
     match:
       - window_process: { regex: '(?i)pencil' }
 
+  # --- Installers & system dialogs: leave them alone (fixed-size, break when tiled) ---
+  - commands: ['ignore']
+    match:
+      # Inno Setup (VSCode, Git, many others)
+      - window_class: { regex: '^TWizardForm$|^TSetupForm$|^TApplication$' }
+      # MSI installers
+      - window_class: { equals: 'MsiDialogCloseClass' }
+      - window_class: { equals: 'MsiDialogNoCloseClass' }
+      # Standard Win32 dialogs (NSIS installers, message boxes, Save/Open, UAC-ish prompts)
+      - window_class: { equals: '#32770' }
+      # Anything titled like an installer
+      - window_title: { regex: '(?i)\b(setup|installer|install(ing)?|uninstall)\b' }
+      - window_process: { regex: '(?i)(setup|install)' }
+
   # --- Ignore rules (from GlazeWM defaults) ---
   - commands: ['ignore']
     match:
@@ -209,6 +223,9 @@ keybindings:
     bindings: ['alt+shift+oem_semicolon']
 
   # GlazeWM extras (no aerospace equivalent)
+  # Quick escape for any window that misbehaves when tiled
+  - commands: ['toggle-floating --centered']
+    bindings: ['alt+shift+space']
   - commands: ['wm-reload-config']
     bindings: ['alt+shift+r']
   - commands: ['wm-toggle-pause']
