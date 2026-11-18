@@ -2,64 +2,120 @@ return {
 	-- tools
 	{
 		"mason-org/mason.nvim",
-		opts = function(_, opts)
-			vim.list_extend(opts.ensure_installed, {
+		opts = {
+			ensure_installed = {
 				"stylua",
 				"selene",
 				"luacheck",
 				"shellcheck",
 				"shfmt",
-				"tailwindcss-language-server",
-				"typescript-language-server",
 				"css-lsp",
+			},
+		},
+	},
+
+	-- `gd` like VSCode/Zed: on the declaration itself, the only definition is the cursor
+	-- position (telescope "jumps" in place, nothing visible) → list the usages instead.
+	-- Appended in an opts function: a `keys` list in an opts table would replace LazyVim's.
+	{
+		"neovim/nvim-lspconfig",
+		opts = function(_, opts)
+			local function definition_or_references()
+				local buf = vim.api.nvim_get_current_buf()
+				local uri = vim.uri_from_bufnr(buf)
+				local line = vim.api.nvim_win_get_cursor(0)[1] - 1
+				vim.lsp.buf_request_all(buf, "textDocument/definition", function(client)
+					return vim.lsp.util.make_position_params(0, client.offset_encoding)
+				end, function(results)
+					local on_declaration = true
+					for _, res in pairs(results) do
+						local locs = res.result or {}
+						if locs.uri or locs.targetUri then
+							locs = { locs }
+						end
+						for _, loc in ipairs(locs) do
+							local range = loc.targetSelectionRange or loc.range
+							if (loc.uri or loc.targetUri) ~= uri or range.start.line ~= line then
+								on_declaration = false
+							end
+						end
+					end
+					vim.schedule(function()
+						local builtin = require("telescope.builtin")
+						if on_declaration then
+							builtin.lsp_references({ include_declaration = false, show_line = true })
+						else
+							builtin.lsp_definitions({ reuse_win = true })
+						end
+					end)
+				end)
+			end
+
+			opts.servers = opts.servers or {}
+			opts.servers["*"] = opts.servers["*"] or {}
+			opts.servers["*"].keys = opts.servers["*"].keys or {}
+			table.insert(opts.servers["*"].keys, {
+				"gd",
+				definition_or_references,
+				desc = "Goto Definition (references when on it)",
+				has = "definition",
 			})
 		end,
 	},
 
-	-- lsp servers
+	-- lsp servers (configured through native `vim.lsp.config` by LazyVim)
+	-- TypeScript: vtsls from the `lang.typescript` extra (its defaults already match Zed:
+	-- parameter-name inlay hints for literals, update imports on file move).
+	-- ESLint fix-on-save: handled by the `linting.eslint` extra.
 	{
 		"neovim/nvim-lspconfig",
 		opts = {
 			inlay_hints = { enabled = true },
-			---@type lspconfig.options
 			servers = {
-				cssls = {},
-				tailwindcss = {
-					root_dir = function(...)
-						return require("lspconfig.util").root_pattern(".git")(...)
-					end,
-				},
-				tsserver = {
-					root_dir = function(...)
-						return require("lspconfig.util").root_pattern(".git")(...)
-					end,
-					single_file_support = false,
+				-- inlay hints like VSCode: only parameter names for literal arguments
+				-- (no return / parameter / property / variable types — use K to see a type)
+				vtsls = {
 					settings = {
 						typescript = {
 							inlayHints = {
-								includeInlayParameterNameHints = "literal",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-								includeInlayFunctionParameterTypeHints = true,
-								includeInlayVariableTypeHints = false,
-								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayEnumMemberValueHints = true,
+								parameterNames = { enabled = "literals", suppressWhenArgumentMatchesName = true },
+								functionLikeReturnTypes = { enabled = false },
+								parameterTypes = { enabled = false },
+								propertyDeclarationTypes = { enabled = false },
+								variableTypes = { enabled = false },
+								enumMemberValues = { enabled = false },
 							},
 						},
 						javascript = {
 							inlayHints = {
-								includeInlayParameterNameHints = "all",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-								includeInlayFunctionParameterTypeHints = true,
-								includeInlayVariableTypeHints = true,
-								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayEnumMemberValueHints = true,
+								parameterNames = { enabled = "literals", suppressWhenArgumentMatchesName = true },
+								functionLikeReturnTypes = { enabled = false },
+								parameterTypes = { enabled = false },
+								propertyDeclarationTypes = { enabled = false },
+								variableTypes = { enabled = false },
+								enumMemberValues = { enabled = false },
 							},
 						},
 					},
 				},
+				cssls = {},
 				html = {},
+				-- same as Zed / VSCode: classes inside cva / cx / cn
+				tailwindcss = {
+					settings = {
+						tailwindCSS = {
+							classAttributes = { "class", "className", "ngClass", "classes" },
+							classFunctions = { "cva", "cx" },
+							experimental = {
+								classRegex = {
+									{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+									{ "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+									{ "cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+								},
+							},
+						},
+					},
+				},
 				yamlls = {
 					settings = {
 						yaml = {
@@ -68,8 +124,6 @@ return {
 					},
 				},
 				lua_ls = {
-					-- enabled = false,
-					single_file_support = true,
 					settings = {
 						Lua = {
 							workspace = {
@@ -78,11 +132,6 @@ return {
 							completion = {
 								workspaceWord = true,
 								callSnippet = "Both",
-							},
-							misc = {
-								parameters = {
-									-- "--log-level=trace",
-								},
 							},
 							hint = {
 								enable = true,
@@ -100,7 +149,6 @@ return {
 							},
 							diagnostics = {
 								disable = { "incomplete-signature-doc", "trailing-space" },
-								-- enable = false,
 								groupSeverity = {
 									strong = "Warning",
 									strict = "Warning",
@@ -123,23 +171,10 @@ return {
 							},
 							format = {
 								enable = false,
-								defaultConfig = {
-									indent_style = "space",
-									indent_size = "2",
-									continuation_indent_size = "2",
-								},
 							},
 						},
 					},
 				},
-			},
-			setup = {
-				eslint = function()
-					-- automatically fix linting errors on save (but otherwise do not format the document)
-					vim.cmd([[
-          autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
-        ]])
-				end,
 			},
 		},
 	},

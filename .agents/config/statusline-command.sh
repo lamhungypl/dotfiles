@@ -85,30 +85,33 @@ else
     printf "%s  %s---%s\033[0m\n" "$bar" "$CTX_COLOR" "$model_str"
 fi
 
-# ── Line 3: 5h rate bar + reset time ─────────────────────────────────────────
-rate_used=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
-rate_resets_at=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
-if [ -n "$rate_used" ]; then
-    rate_int=$(printf "%.0f" "$rate_used")
-    bar=$(make_bar "$rate_used" "$RATE_COLOR" " 5h" "$RATE_BG")
-
-    time_str=""
-    if [ -n "$rate_resets_at" ]; then
-        now=$(date +%s)
-        remaining=$(( rate_resets_at - now ))
+# ── Rate limit line: $1=json key  $2=label  $3=color  $4=bg ─────────────────
+rate_line() {
+    local used resets_at bar time_str="" remaining d h m
+    used=$(echo "$input" | jq -r ".rate_limits.$1.used_percentage // empty")
+    resets_at=$(echo "$input" | jq -r ".rate_limits.$1.resets_at // empty")
+    if [ -z "$used" ]; then
+        bar=$(make_bar "0" "$3" "$2" "$4")
+        printf "%s  %s---\033[0m" "$bar" "$3"
+        return
+    fi
+    bar=$(make_bar "$used" "$3" "$2" "$4")
+    if [ -n "$resets_at" ]; then
+        remaining=$(( ${resets_at%.*} - $(date +%s) ))
         if [ "$remaining" -gt 0 ]; then
-            h=$(( remaining / 3600 ))
-            m=$(( (remaining % 3600) / 60 ))
-            if [ "$h" -gt 0 ]; then
-                time_str="  ·  ${h}h ${m}m left"
-            else
-                time_str="  ·  ${m}m left"
-            fi
+            d=$(( remaining / 86400 )); h=$(( (remaining % 86400) / 3600 )); m=$(( (remaining % 3600) / 60 ))
+            if   [ "$d" -gt 0 ]; then time_str="  ·  ${d}d ${h}h left"
+            elif [ "$h" -gt 0 ]; then time_str="  ·  ${h}h ${m}m left"
+            else time_str="  ·  ${m}m left"; fi
         fi
     fi
+    printf "%s  %s%3d%%%s\033[0m" "$bar" "$3" "$(printf "%.0f" "$used")" "$time_str"
+}
 
-    printf "%s  %s%3d%%%s\033[0m" "$bar" "$RATE_COLOR" "$rate_int" "$time_str"
-else
-    bar=$(make_bar "0" "$RATE_COLOR" " 5h" "$RATE_BG")
-    printf "%s  %s---\033[0m" "$bar" "$RATE_COLOR"
-fi
+WEEK_COLOR=$'\033[33m'  # yellow fg
+WEEK_BG=$'\033[43m'     # yellow bg
+
+# ── Line 3: 5h rate ── Line 4: 7d rate ───────────────────────────────────────
+rate_line five_hour " 5h" "$RATE_COLOR" "$RATE_BG"
+printf "\n"
+rate_line seven_day " 7d" "$WEEK_COLOR" "$WEEK_BG"

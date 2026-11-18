@@ -1,0 +1,152 @@
+/**
+ * Zebar "starter" pack styles — more transparent bar.
+ * Pack dir: symlink .config/zebar/dotfiles-bar -> ~/.glzr/zebar/dotfiles-bar
+ * Based on https://github.com/glzr-io/zebar/blob/main/resources/starter/styles.css
+ */
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
+:root {
+  --text-size: 12px;
+  --icon-size: 12px;
+
+  /* Same look in light + dark Windows themes */
+  --text-color: rgb(255 255 255 / 95%);
+  --icon-color: rgb(170 190 240 / 95%);
+  --text-shadow: 0 1px 2px rgb(0 0 0 / 60%);
+
+  /* Bar background: lower alpha = more transparent (0% = fully clear) */
+  --background: rgb(10 10 20 / 25%);
+
+  /* Workspace pills: dark glass so they stand out on bright wallpapers */
+  --pill: rgb(15 18 30 / 45%);
+  --pill-displayed: rgb(15 18 30 / 65%);
+  --pill-focused: rgb(75 115 255 / 90%);
+  --pill-border: 1px solid rgb(255 255 255 / 18%);
+  --pill-border-focused: 1px solid rgb(160 185 255 / 90%);
+  --pill-shadow: 0 1px 4px rgb(0 0 0 / 45%);
+}
+
+body {
+  color: var(--text-color);
+  text-shadow: var(--text-shadow);
+  font-family: ui-monospace, monospace;
+  font-size: var(--text-size);
+  overflow: hidden;
+}
+
+i {
+  color: var(--icon-color);
+  margin-right: 7px;
+  font-size: var(--icon-size);
+}
+
+#root {
+  background: var(--background);
+}
+
+div,
+span,
+p {
+  cursor: default;
+  user-select: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  height: 100%;
+  padding: 4px 1.5vw;
+}
+
+.left,
+.center,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  justify-self: center;
+}
+
+.right {
+  justify-self: end;
+}
+
+.logo,
+.binding-mode,
+.tiling-direction,
+.paused-button,
+.network,
+.memory,
+.cpu,
+.battery {
+  margin-right: 20px;
+}
+
+.workspaces {
+  display: flex;
+  align-items: center;
+}
+
+.workspace {
+  background: var(--pill);
+  margin-right: 4px;
+  padding: 4px 8px;
+  color: var(--text-color);
+  text-shadow: var(--text-shadow);
+  border: var(--pill-border);
+  border-radius: 4px;
+  box-shadow: var(--pill-shadow);
+  cursor: pointer;
+
+  &.displayed {
+    background: var(--pill-displayed);
+  }
+
+  &.focused,
+  &:hover {
+    background: var(--pill-focused);
+    border: var(--pill-border-focused);
+    font-weight: bold;
+  }
+}
+
+.binding-mode,
+.tiling-direction,
+.paused-button {
+  background: var(--pill-displayed);
+  color: var(--text-color);
+  border-radius: 4px;
+  line-height: 1;
+  padding: 4px 8px;
+  border: var(--pill-border);
+  box-shadow: var(--pill-shadow);
+  cursor: pointer;
+}
+
+.binding-mode {
+  margin-right: 4px;
+}
+
+.cpu .high-usage {
+  color: #ff5c7a;
+}
+
+.battery {
+  position: relative;
+}
+
+.battery .charging-icon {
+  position: absolute;
+  font-size: 7px;
+  left: -8px;
+  top: 3px;
+}

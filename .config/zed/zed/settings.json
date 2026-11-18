@@ -3,6 +3,8 @@
 // Docs: https://zed.dev/docs/configuring-zed
 // Default settings: `zed: open default settings` (cmd-shift-p)
 {
+  "diff_view_style": "split",
+  "cli_default_open_behavior": "new_window",
   "base_keymap": "VSCode",
   "vim_mode": true,
   // cmd-o: type/paste any absolute path (file finder only matches files inside the project)
@@ -46,6 +48,8 @@
     "scrollbar": { "show": "auto", "horizontal_scroll": false }
   },
   "preview_tabs": { "enabled": false },
+  // Branch name + git status icon in the title bar (Zed has no branch item in the status bar)
+  "title_bar": { "show_branch_name": true, "show_branch_status_icon": true },
 
   // Editing
   "tab_size": 2,
@@ -78,10 +82,18 @@
   },
 
   "lsp": {
+    // Inlay hints like VSCode: only parameter names for literal arguments
+    // (Zed's defaults also show return / parameter / variable types)
     "typescript-language-server": {
       "initialization_options": {
         "preferences": {
-          "includeInlayParameterNameHints": "literals"
+          "includeInlayParameterNameHints": "literals",
+          "includeInlayParameterNameHintsWhenArgumentMatchesName": false,
+          "includeInlayFunctionParameterTypeHints": false,
+          "includeInlayVariableTypeHints": false,
+          "includeInlayPropertyDeclarationTypeHints": false,
+          "includeInlayFunctionLikeReturnTypeHints": false,
+          "includeInlayEnumMemberValueHints": false
         }
       }
     },
@@ -89,7 +101,25 @@
       "settings": {
         "typescript": {
           "updateImportsOnFileMove": { "enabled": "always" },
-          "inlayHints": { "parameterNames": { "enabled": "literals" } }
+          "inlayHints": {
+            "parameterNames": { "enabled": "literals", "suppressWhenArgumentMatchesName": true },
+            "functionLikeReturnTypes": { "enabled": false },
+            "parameterTypes": { "enabled": false },
+            "propertyDeclarationTypes": { "enabled": false },
+            "variableTypes": { "enabled": false },
+            "enumMemberValues": { "enabled": false }
+          }
+        },
+        "javascript": {
+          "updateImportsOnFileMove": { "enabled": "always" },
+          "inlayHints": {
+            "parameterNames": { "enabled": "literals", "suppressWhenArgumentMatchesName": true },
+            "functionLikeReturnTypes": { "enabled": false },
+            "parameterTypes": { "enabled": false },
+            "propertyDeclarationTypes": { "enabled": false },
+            "variableTypes": { "enabled": false },
+            "enumMemberValues": { "enabled": false }
+          }
         }
       }
     },

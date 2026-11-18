@@ -1,16 +1,17 @@
 ---
 name: statusline-setup
-description: Configure Claude Code's statusline with a Powerlevel10k-inspired theme showing directory, git branch, lines changed, context usage bar, and 5h rate limit bar — each on its own line.
+description: Configure Claude Code's statusline with a Powerlevel10k-inspired theme showing directory, git branch, lines changed, context usage bar, 5h and 7d rate limit bars — each on its own line.
 ---
 
 # Statusline Configuration Skill
 
 ## Overview
 
-This skill configures Claude Code's statusline with a Powerlevel10k-inspired theme that displays **3 lines**:
+This skill configures Claude Code's statusline with a Powerlevel10k-inspired theme that displays **4 lines**:
 - **Line 1**: Shortened directory (`~/currentDir`), git branch, lines added/removed
 - **Line 2**: `ctx` — context usage as a solid filled progress bar with percentage
 - **Line 3**: `5h` — 5-hour rate limit as a solid filled progress bar with percentage and reset countdown
+- **Line 4**: `7d` — 7-day rate limit as a solid filled progress bar with percentage and reset countdown
 
 ## Pre-Installation Checks
 
@@ -107,11 +108,9 @@ make_bar() {
 
     local empty=$(( fill_avail - fill_chars ))
 
-    # [  label░░░░░░         ]
-    # └─ bg fill ─┘└─ empty ─┘
     local bar
     bar="${line_color}["
-    bar+="${bg_color}"$'\033[1;97m'"${label}"$'\033[0m'"${bg_color}"   # bold bright-white on bg for contrast
+    bar+="${bg_color}"$'\033[1;97m'"${label}"$'\033[0m'"${bg_color}"
     for ((i=0; i<fill_chars; i++)); do bar+=" "; done
     bar+=$'\033[0m'
     for ((i=0; i<empty; i++)); do bar+=" "; done
@@ -134,44 +133,52 @@ CTX_BG=$'\033[46m'      # cyan bg
 RATE_COLOR=$'\033[35m'  # magenta fg
 RATE_BG=$'\033[45m'     # magenta bg
 
+# Model name
+model_name=$(echo "$input" | jq -r '.model.display_name // empty')
+
 # ── Line 2: context bar ───────────────────────────────────────────────────────
 context_used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+model_str=""
+[ -n "$model_name" ] && model_str="  ·  ${model_name}"
 if [ -n "$context_used" ]; then
     used_int=$(printf "%.0f" "$context_used")
     bar=$(make_bar "$context_used" "$CTX_COLOR" "ctx" "$CTX_BG")
-    printf "%s  %s%3d%%\033[0m\n" "$bar" "$CTX_COLOR" "$used_int"
+    printf "%s  %s%3d%%%s\033[0m\n" "$bar" "$CTX_COLOR" "$used_int" "$model_str"
 else
     bar=$(make_bar "0" "$CTX_COLOR" "ctx" "$CTX_BG")
-    printf "%s  %s---\033[0m\n" "$bar" "$CTX_COLOR"
+    printf "%s  %s---%s\033[0m\n" "$bar" "$CTX_COLOR" "$model_str"
 fi
 
-# ── Line 3: 5h rate bar + reset time ─────────────────────────────────────────
-rate_used=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
-rate_resets_at=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
-if [ -n "$rate_used" ]; then
-    rate_int=$(printf "%.0f" "$rate_used")
-    bar=$(make_bar "$rate_used" "$RATE_COLOR" " 5h" "$RATE_BG")
-
-    time_str=""
-    if [ -n "$rate_resets_at" ]; then
-        now=$(date +%s)
-        remaining=$(( rate_resets_at - now ))
+# ── Rate limit line: $1=json key  $2=label  $3=color  $4=bg ─────────────────
+rate_line() {
+    local used resets_at bar time_str="" remaining d h m
+    used=$(echo "$input" | jq -r ".rate_limits.$1.used_percentage // empty")
+    resets_at=$(echo "$input" | jq -r ".rate_limits.$1.resets_at // empty")
+    if [ -z "$used" ]; then
+        bar=$(make_bar "0" "$3" "$2" "$4")
+        printf "%s  %s---\033[0m" "$bar" "$3"
+        return
+    fi
+    bar=$(make_bar "$used" "$3" "$2" "$4")
+    if [ -n "$resets_at" ]; then
+        remaining=$(( ${resets_at%.*} - $(date +%s) ))
         if [ "$remaining" -gt 0 ]; then
-            h=$(( remaining / 3600 ))
-            m=$(( (remaining % 3600) / 60 ))
-            if [ "$h" -gt 0 ]; then
-                time_str="  ·  ${h}h ${m}m left"
-            else
-                time_str="  ·  ${m}m left"
-            fi
+            d=$(( remaining / 86400 )); h=$(( (remaining % 86400) / 3600 )); m=$(( (remaining % 3600) / 60 ))
+            if   [ "$d" -gt 0 ]; then time_str="  ·  ${d}d ${h}h left"
+            elif [ "$h" -gt 0 ]; then time_str="  ·  ${h}h ${m}m left"
+            else time_str="  ·  ${m}m left"; fi
         fi
     fi
+    printf "%s  %s%3d%%%s\033[0m" "$bar" "$3" "$(printf "%.0f" "$used")" "$time_str"
+}
 
-    printf "%s  %s%3d%%%s\033[0m" "$bar" "$RATE_COLOR" "$rate_int" "$time_str"
-else
-    bar=$(make_bar "0" "$RATE_COLOR" " 5h" "$RATE_BG")
-    printf "%s  %s---\033[0m" "$bar" "$RATE_COLOR"
-fi
+WEEK_COLOR=$'\033[33m'  # yellow fg
+WEEK_BG=$'\033[43m'     # yellow bg
+
+# ── Line 3: 5h rate ── Line 4: 7d rate ───────────────────────────────────────
+rate_line five_hour " 5h" "$RATE_COLOR" "$RATE_BG"
+printf "\n"
+rate_line seven_day " 7d" "$WEEK_COLOR" "$WEEK_BG"
 ```
 
 ### Step 2: Make the script executable
@@ -199,10 +206,11 @@ If the file already exists, merge the `statusLine` key into the existing configu
 
 After installation:
 1. Restart Claude Code
-2. The statusline should appear at the bottom showing 3 lines:
+2. The statusline should appear at the bottom showing 4 lines:
    - **Line 1**: Directory in cyan, git branch in magenta, `+N -N` lines in green/red
    - **Line 2**: `[ctx          ]  25%` — cyan battery bar for context window usage
    - **Line 3**: `[ 5h          ]  12%  ·  3h 40m left` — magenta battery bar for 5-hour rate limit (Pro/Max only)
+   - **Line 4**: `[ 7d          ]  42%  ·  3d 11h left` — yellow battery bar for 7-day rate limit (Pro/Max only)
 
 ## Customization
 

@@ -27,20 +27,30 @@
       "; d": "pane::CloseInactiveItems",
       "; o": "outline_panel::ToggleFocus",
       "; g": "git_graph::Open",
-      "alt-n alt-p": "workspace::ActivatePreviousPane",
-      "alt-n alt-n": "workspace::ActivateNextPane",
       "ctrl-shift-alt-=": "vim::ResizePaneRight",
       "ctrl-shift-alt--": "vim::ResizePaneLeft",
 
       // Zed-only extras (not in VSCode). NOTE: these shadow vim's
-      // `t{char}`, `s` and `n` (next search match) — a single `t`/`s`/`n`
-      // now waits for the keymap timeout before running.
+      // `t{char}` and `s` — a single `t`/`s` now waits for the keymap
+      // timeout before running. `n`/`N` are left alone so they jump to the
+      // next/prev search match instantly (like VSCodeVim). Switch panes with
+      // vim's built-in `ctrl-w h/l` (same in VSCode + LazyVim; alt-n is a
+      // macOS dead key, so VSCode never saw alt-n chords).
       "t n": "pane::ActivateNextItem",
       "t p": "pane::ActivatePreviousItem",
       "s v": "pane::SplitRight",
-      "s h": "pane::SplitDown",
-      "n p": ["workspace::ActivatePaneInDirection", "Left"],
-      "n n": ["workspace::ActivatePaneInDirection", "Right"]
+      "s h": "pane::SplitDown"
+    }
+  },
+  {
+    // No file open → no Editor context, so the `;` bindings above don't fire
+    "context": "EmptyPane",
+    "bindings": {
+      "; e": "project_panel::ToggleFocus",
+      "; f": "file_finder::Toggle",
+      "; r": "pane::DeploySearch",
+      "; o": "outline_panel::ToggleFocus",
+      "; g": "git_graph::Open"
     }
   },
   {
@@ -54,13 +64,40 @@
       "d": ["project_panel::Delete", { "skip_prompt": false }],
       "; f": "file_finder::Toggle",
       "; r": "pane::DeploySearch",
-      "; e": "project_panel::ToggleFocus",
+      // back to the editor like VSCode (ToggleFocus restores the previously focused
+      // view in Zed 1.x, which isn't always the editor)
+      "; e": "workspace::FocusCenterPane",
       "; g": "git_graph::Open",
       // pane actions don't reach the panel: jump back to the editor, then run `; d` there
-      "; d": ["workspace::SendKeystrokes", "; e ; d"],
+      "; d": ["action::Sequence", ["workspace::FocusCenterPane", ["workspace::SendKeystrokes", "; d"]]],
       "ctrl-n": "project_panel::NewFile",
       "cmd-n": "project_panel::NewFile",
       "alt-cmd-n": "project_panel::NewDirectory"
+    }
+  },
+  {
+    // Terminal has no normal mode, so a bare `;` prefix would hijack shell
+    // typing (`a; b`). Use ctrl-; as the prefix instead.
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-; f": "file_finder::Toggle",
+      "ctrl-; r": "pane::DeploySearch",
+      "ctrl-; e": "project_panel::ToggleFocus",
+      "ctrl-; g": "git_graph::Open",
+      // pane actions target the editor: jump back to it, then run `; d` there
+      "ctrl-; d": ["action::Sequence", ["terminal_panel::ToggleFocus", ["workspace::SendKeystrokes", "; d"]]]
+    }
+  },
+  {
+    // Empty pane (no file open) has no Editor context, so the `;` editor
+    // bindings above never fire there. Nothing is typed in an empty pane,
+    // so a bare `;` prefix is safe.
+    "context": "EmptyPane || SharedScreen",
+    "bindings": {
+      "; f": "file_finder::Toggle",
+      "; r": "pane::DeploySearch",
+      "; e": "project_panel::ToggleFocus",
+      "; g": "git_graph::Open"
     }
   },
   {

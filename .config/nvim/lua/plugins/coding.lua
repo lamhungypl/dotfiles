@@ -24,6 +24,8 @@ return {
 	-- Refactoring tool
 	{
 		"ThePrimeagen/refactoring.nvim",
+		-- refactoring.nvim 2.x (LazyVim 16) needs async.nvim and Neovim 0.12
+		dependencies = { { "lewis6991/async.nvim", lazy = true } },
 		keys = {
 			{
 				"<leader>r",
@@ -78,20 +80,17 @@ return {
 		end,
 	},
 
+	-- emoji completion for blink.cmp (replaces cmp-emoji; nvim-cmp is no longer used)
 	{
-		"simrat39/symbols-outline.nvim",
-		keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
-		cmd = "SymbolsOutline",
+		"saghen/blink.cmp",
+		dependencies = { "moyiz/blink-emoji.nvim" },
 		opts = {
-			position = "right",
+			sources = {
+				default = { "emoji" },
+				providers = {
+					emoji = { module = "blink-emoji", name = "Emoji", score_offset = 15 },
+				},
+			},
 		},
-	},
-
-	{
-		"nvim-cmp",
-		dependencies = { "hrsh7th/cmp-emoji" },
-		opts = function(_, opts)
-			table.insert(opts.sources, { name = "emoji" })
-		end,
 	},
 }
