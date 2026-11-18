@@ -1,6 +1,6 @@
 /**
  * Zebar "starter" pack styles — more transparent bar.
- * Install: copy to %USERPROFILE%\.glzr\zebar\starter\styles.css
+ * Pack dir: symlink .config/zebar/dotfiles-bar -> ~/.glzr/zebar/dotfiles-bar
  * Based on https://github.com/glzr-io/zebar/blob/main/resources/starter/styles.css
  */
 @import 'https://www.nerdfonts.com/assets/css/webfont.css';
