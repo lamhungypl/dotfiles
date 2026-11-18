@@ -3,11 +3,9 @@
 # Docs: https://github.com/glzr-io/glazewm
 
 general:
-  # Zebar status bar (optional). Uncomment if installed.
-  # startup_commands: ['shell-exec zebar']
-  # shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
-  startup_commands: []
-  shutdown_commands: []
+  # Zebar status bar (shows workspaces). Requires Zebar installed.
+  startup_commands: ['shell-exec zebar']
+  shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
   config_reload_commands: []
 
   focus_follows_cursor: false
@@ -21,12 +19,12 @@ general:
   hide_method: 'cloak'
   show_all_in_taskbar: true
 
-# aerospace: inner 6 / outer 4
+# aerospace: inner 6 / outer 4 (top = Zebar bar height + 4px)
 gaps:
   scale_with_dpi: true
   inner_gap: '6px'
   outer_gap:
-    top: '4px'
+    top: '44px'
     right: '4px'
     bottom: '4px'
     left: '4px'
