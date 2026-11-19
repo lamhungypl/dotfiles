@@ -189,9 +189,16 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 alt-shift-semicolon = 'mode service'
 cmd-alt-shift-semicolon = 'mode service'
 
+# Passthrough: AeroSpace ignores all keys (e.g. for RustDesk -> GlazeWM on Windows)
+cmd-alt-shift-p = 'mode passthrough'
 
 
 
+
+
+# 'passthrough' mode: only the toggle key is bound, everything else goes to the focused app.
+[mode.passthrough.binding]
+cmd-alt-shift-p = 'mode main'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
