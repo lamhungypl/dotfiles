@@ -1,7 +1,11 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+# MSYS2/Cygwin: Windows can't rename over a file another process holds open, so
+# instant prompt's cache dump fails with "zf_mv: permission denied". Disable it there.
+if [[ $OSTYPE == (msys|cygwin)* ]]; then
+  typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+elif [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
@@ -199,6 +203,8 @@ load-nvmrc
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# ~/.p10k.zsh sets INSTANT_PROMPT=verbose; re-disable on MSYS2/Cygwin (see top of file).
+[[ $OSTYPE == (msys|cygwin)* ]] && typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
 # Set PATH, MANPATH, etc., for Homebrew.
 
